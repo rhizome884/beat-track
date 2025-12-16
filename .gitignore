@@ -1,5 +1,8 @@
 *.mp3
 *.wav
 *.jams
+*.csv
+*.mid
+*.midi
 beat-maps/
 downbeat-maps/
