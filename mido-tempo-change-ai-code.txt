@@ -1,0 +1,15 @@
+from mido import MidiFile, MidiTrack, MetaMessage
+def create_tempo_map_midi(positions, tempos, sample_rate=44100, output_midi_file='tempo_map.mid'):
+midi = MidiFile()
+track = MidiTrack()
+midi.tracks.append(track)
+ticks_per_beat = 480
+current_ticks = 0
+for position, tempo in zip(positions, tempos):
+bpm_to_microseconds = 60_000_000 / tempo
+time_seconds = position / sample_rate
+time_ticks = int(time_seconds * ticks_per_beat * tempo / 60)
+delta_ticks = max(0, time_ticks - current_ticks)
+track.append(MetaMessage('set_tempo', tempo=int(bpm_to_microseconds), time=delta_ticks))
+current_ticks = time_ticks
+save_midi_file('tempo_map.mid', output_midi_file)
