@@ -10,12 +10,12 @@ def csv_to_midi_bar_map(csvpath, midpath, timesig, resolution=960, tempo=120.0):
 
     # Iterate through csv file
     with open(csvpath, 'r', newline='') as csvfile:
-        csvreader = csv.reader(csvfile, delimiter=',')
+        reader = csv.DictReader(csvfile, delimiter=',')
         # Extract downbeat times and add 
-        for col in csvreader:
+        for line in reader:
             # Create time location value for 'note star/end' (downbeat duration set to 0.1s) 
-            start = float(col[0])
-            end = float(col[0]) + 0.1 
+            start = float(line['TIME'])
+            end = float(line['TIME']) + 0.1 
             # Save downbeat as MIDI note event 127
             downbeat = pretty_midi.Note(velocity=127, pitch=127, start=start, end=end)
             inst.notes.append(downbeat)
@@ -28,8 +28,8 @@ def csv_to_midi_bar_map(csvpath, midpath, timesig, resolution=960, tempo=120.0):
 
 if __name__ == "__main__":
 
-    csvpath = "danza-paraguaya_rojas_downbeats.csv"
-    midpath = "danza-paraguaya_rojas_downbeats.mid"
+    csvpath = "danza_downbeat_test.csv"
+    midpath = "danza_downbeat_test.mid"
 
     # time signature
     timesig = [3,4]
