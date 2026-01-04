@@ -21,8 +21,8 @@ def write_csv_to_midi(downbeatfile, notefile, midi_path):
             note_events.append(line)
 
     # This configuration is the same as MIDIs in MAESTRO dataset
-    ticks_per_beat = 384
-    beats_per_second = 2
+    ticks_per_beat = 960
+    beats_per_second = 1
     ticks_per_second = ticks_per_beat * beats_per_second
     # microseconds_per_beat = int(1e6 // beats_per_second)
 
@@ -33,7 +33,7 @@ def write_csv_to_midi(downbeatfile, notefile, midi_path):
     # Track 0
     track0 = MidiTrack()
     #track0.append(MetaMessage('set_tempo', tempo=microseconds_per_beat, time=0))
-    track0.append(MetaMessage('time_signature', numerator=4, denominator=4, time=0))
+    track0.append(MetaMessage('time_signature', numerator=1, denominator=1, time=0))
     #track0.append(MetaMessage('end_of_track', time=1))
     #midi_file.tracks.append(track0)
     
@@ -51,7 +51,7 @@ def write_csv_to_midi(downbeatfile, notefile, midi_path):
     meta_message_roll.sort(key=lambda note_event: note_event['time'])
     
     previous_ticks = 0
-    start_time = 0 # this value is redundant for the time being
+    start_time = meta_message_roll[0]['time']
     for message in meta_message_roll:
         this_ticks = int((message['time'] - start_time) * ticks_per_second)
         if this_ticks >= 0:
@@ -87,7 +87,7 @@ def write_csv_to_midi(downbeatfile, notefile, midi_path):
     message_roll.sort(key=lambda note_event: note_event['time'])
 
     previous_ticks = 0
-    start_time = 0 # this value is redundant for the time being
+    start_time = message_roll[0]['time']
     for message in message_roll:
         this_ticks = int((message['time'] - start_time) * ticks_per_second)
         if this_ticks >= 0:
@@ -106,8 +106,8 @@ def write_csv_to_midi(downbeatfile, notefile, midi_path):
 
 if __name__ == "__main__":
 
-    downbeatfile = 'danza_downbeat_test.csv'
-    notefile = 'danza_note_test.csv'
+    downbeatfile = 'shit.csv'
+    notefile = 'shit-notes.csv'
     midi_path = 'danza_merge_test.mid'
 
     write_csv_to_midi(downbeatfile, notefile, midi_path)
